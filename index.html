@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Slimis Room</title>
+  <title>Adventskalender</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Verdana&display=swap');
     body {
       margin: 0;
-      font-family: Verdana, sans-serif;
-      background-image: url('images/glas_bg.jpg');
-      background-repeat: repeat;
+      font-family: 'Verdana', sans-serif;
+      background: url('images/glas_bg.jpg') repeat;
       background-size: auto;
-      background-position: center;
-      color: #ffe6a7;
+      color: #333;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -20,14 +19,13 @@
     }
 
     h1 {
-      font-size: 2rem;
-      color: #333333;
-      background: rgba(255,255,255,0.25);
-      backdrop-filter: blur(6px);
-      padding: 10px 20px;
+      font-size: 2.4rem;
+      background: rgba(255,255,255,0.4);
+      padding: 15px 30px;
       border-radius: 12px;
+      color: #555;
       text-align: center;
-      margin-top: 20px;
+      backdrop-filter: blur(6px);
     }
 
     .grid {
@@ -40,6 +38,7 @@
     }
 
     .door {
+      background: rgba(255,255,255,0.2);
       border-radius: 12px;
       height: 85px;
       display: flex;
@@ -47,38 +46,37 @@
       align-items: center;
       font-size: 1.6rem;
       cursor: pointer;
-      transition: transform 0.25s ease, filter 0.3s;
-      color: #ffe6a7;
-      font-weight: bold;
+      transition: transform 0.25s ease;
+      color: #555;
     }
 
-    .door:nth-child(5n+1) { background-color: #283618; }
-    .door:nth-child(5n+2) { background-color: #335c67; }
-    .door:nth-child(5n+3) { background-color: #4b3f72; }
-    .door:nth-child(5n+4) { background-color: #432818; }
-    .door:nth-child(5n+5) { background-color: #540b0e; }
+    .door:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
 
     .modal-bg {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.5);
       display: none;
       justify-content: center;
       align-items: center;
       padding: 20px;
+      z-index: 10;
     }
 
     .modal {
-      background: rgba(60, 43, 36, 0.8);
-      border: 2px solid #cea572;
-      border-radius: 10px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 12px;
       max-width: 500px;
-      width: 90%;
+      width: 100%;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      backdrop-filter: blur(6px);
-      margin: 0 auto;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #333;
     }
 
     .modal img {
@@ -88,40 +86,30 @@
     }
 
     .music-link {
-      display: block;
-      margin: 10px 0;
-      color: #ffe6a7;
+      margin-bottom: 10px;
+      color: #555;
       text-decoration: underline;
       font-weight: bold;
     }
 
     .close-btn {
       margin-top: 10px;
-      background: #af8454;
+      background: #555;
       border: none;
       padding: 10px 15px;
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
-      color: #2b1f1a;
+      color: #fff;
       font-weight: bold;
     }
 
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .door { height: 70px; font-size: 1.3rem; }
-      .modal { max-width: 90%; padding: 15px; left: 50%; transform: translateX(-50%); }
-      .close-btn { width: 100%; }
-      h1 { font-size: 1.8rem; }
-    }
-
-    /* Startscreen */
     #start-screen {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(3px);
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(6px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -131,19 +119,41 @@
 
     #start-screen h2 {
       font-size: 2.2rem;
+      color: #555;
       margin-bottom: 20px;
-      color: #dbeaf6;
+      background: rgba(255,255,255,0.4);
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
     }
 
     #start-btn {
-      background: #af8454;
+      background: rgba(255,255,255,0.3);
       padding: 12px 20px;
       border-radius: 10px;
       border: none;
       font-size: 1.3rem;
       cursor: pointer;
-      color: #2b1f1a;
+      color: #555;
       font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .door {
+        height: 70px;
+        font-size: 1.3rem;
+      }
+      .modal {
+        max-width: 90%;
+        padding: 15px;
+        align-items: center;
+      }
     }
   </style>
 </head>
@@ -167,34 +177,30 @@
 
   <script>
     const content = {
-      "1": { "text": "Unser erster Kontakt <3 Wie recht du hattest. WHAT A MATCH!", "image": "images/1.jpg", "musicLink": "https://music.youtube.com/watch?v=R3MuRY7LAg8&si=1bqwQtnAq4-n3Ib2" },
-      "2": { "text": "Hahah, die Lelit Aktion! Stellvertretend für die gesamte Coffee-Journey mit dir. So ein schönes Hobby mit so schönen Erinnerungen mit dir.", "image": "images/2.jpg", "musicLink": "https://music.youtube.com/watch?v=m0zwbe6Cz3U&si=Gmi6pUu_AxWWjfub" },
-      "3": { "text": "So liebevoll. So fühl ich mich in deiner Gegenwart. Behutsam geliebt.", "image": "images/3.jpg", "musicLink": "https://music.youtube.com/watch?v=K_jUQWkHPZk&si=u-Z_fyTIndv4tA8n" },
-      "4": { "text": "OMG! Wie geil war der Tag? Und wie lecker war die Pizza beim Pferd?! Richtiger erster Münsti Tag mit Chillen am Kanal.", "image": "images/4.jpg", "musicLink": "https://music.youtube.com/watch?v=BB0eys9AixU&si=e-FqdD3PY4XrwyMh" },
-      "5": { "text": "Das erste Mal Bibimbap! Das erste Mal, dass du für mich gekocht hast. Und wie LECKER es war! Der Abend hat noch eine Core Memory für mich. <3", "image": "images/5.jpg", "musicLink": "https://music.youtube.com/watch?v=LDg8UW51jCs&si=eZPyia28E2X1-i9f" },
-      "6": { "text": "Muss ich dazu was sagen? Danke für jeden Lacher und für jedes Sticker-würdige Gesicht im letzten Jahr. Ich liebe dich!", "image": "images/6.jpg", "musicLink": "https://music.youtube.com/watch?v=KSQttz9l-0U&si=fGZF1tE53hkfHz7W" },
-      "7": { "text": "<3 Danke, dass du ein Teil meiner Familie geworden bist. <3", "image": "images/7.jpg", "musicLink": "https://music.youtube.com/watch?v=soCJTCElcbk&si=O_PHb62stetkqYkN" },
-      "8": { "text": "Ich hätte vermutlich den kompletten Kalender voll mit Reload-Fotos machen können. Es war so schön. Danke für all diese kleinen und großen Momente dort. Danke für diese schönen Erfahrungen und danke, dass ich das alles mit DIR erleben darf. ~blessed~", "image": "images/8.jpg", "musicLink": "https://music.youtube.com/watch?v=u8HlJVaweaQ&si=5b-nCoFWw8N6hETy" },
-      "9": { "text": "SCHWEBI! WUPPI DÖNI!", "image": "images/9.jpg", "musicLink": "https://music.youtube.com/watch?v=1QpQqt7FLSE&si=0t1xYA6-KCBreWoG" },
-      "10": { "text": "Danke, dass du mir zuhörst. Danke, dass du so aufmerksam bist. Danke, dass du mich so gut kennen möchtest. Danke für den schönen Geburtstag mit dir. Deine Geschenke haben mir so viel bedeutet.", "image": "images/10.jpg", "musicLink": "https://music.youtube.com/watch?v=LtNQwLo8N-Y&si=0HQzlo5KNuwHinuB" },
-      "11": { "text": "Hamburg. Kurz vor Resolve. Unser erstes gemeinsames Konzert. Und wieder könnte ich Danke sagen. Danke, dass du mir diesen Teil meines Lebens wieder gebracht hast. Danke für diesen unglaublich schönen Urlaub.", "image": "images/11.jpg", "musicLink": "https://music.youtube.com/watch?v=QGuc2kykzNw&si=pfwfBXMf0b8P3AsO" },
-      "12": { "text": "Haha Japan. Das haben wir so gut gemacht. Ich bin so stolz auf dich, dass du das gemacht hast. Und all die Erinnerungen, die du dort gemacht hast. Du bist so daran gewachsen. Das war richtig schön aus der Ferne zu beobachten. (wir müssen noch die restlichen Fotos schauen lol )", "image": "images/12.jpg", "musicLink": "https://music.youtube.com/watch?v=QS_dvqcY3l8&si=2h1NTfl_mHYsU-7p" },
-      "13": { "text": "Unser erstes Selfie. haha Erinnerst du dich? Das ging an Momo.", "image": "images/13.jpg", "musicLink": "https://music.youtube.com/watch?v=-QcSjf4qZS0&si=8exQGWxh3SZflYdA" },
-      "14": { "text": "Aw. Spielplatz in Mannheim. Das erste Mal bei deinen Eltern. Der Spaziergang in deiner Hood. <3", "image": "images/14.jpg", "musicLink": "https://music.youtube.com/watch?v=lsXLS8wJNAg&si=MlbUt41TLULtl-dT" },
-      "15": { "text": "Dein erster Besuch bei mir. STAY SLINKY! Wie ADHD war das eigentlich? Wie ADHD ist dieses Bild? :D", "image": "images/15.jpg", "musicLink": "https://music.youtube.com/watch?v=YB13CAOZhcM&si=3A6wL4RjON41TY7_" },
-      "16": { "text": "\"Dieses Paar möchte dich gern auf einen Cocktail einladen.\"", "image": "images/16.jpg", "musicLink": "https://music.youtube.com/watch?v=AvMY_KYUv1g&si=9S6vEjvo5Vsg0bs1" },
-      "17": { "text": "Ich hab mehr Flips in meinen Mund bekommen. Den Sieg wollte ich einfach auch nochmal hier für uns alle in Erinnerung rufen.", "image": "images/17.jpg", "musicLink": "https://music.youtube.com/watch?v=piQixLjDk9A&si=yysxk77l5ty0Jbqj" },
-      "18": { "text": "Efteling. Was soll ich sagen. Das war einfach awesome. DER FLIEGENDE HOLLÄNDER!", "image": "images/18.jpg", "musicLink": "https://music.youtube.com/watch?v=pZUbvrJCs5w&si=YwvrUehVocEKDdcV" },
-      "19": { "text": "Ramen in Frankfurt. Stellvertretend für all unsere Food Spots und Erlebnisse. Das Leben ist so gut mit dir.", "image": "images/19.jpg", "musicLink": "https://music.youtube.com/watch?v=WBXWcQan6GE&si=MJnXBVxwQc2WuPTB" },
-      "20": { "text": "Erstes Mal zusammen ins Kino! Erinnerst du dich? Im Schlosstheater? Und was wir davor gemacht haben?", "image": "images/20.jpg", "musicLink": "https://music.youtube.com/watch?v=LgaYI1vbou4&si=i6O5OdGr3t2MYhxv" },
-      "21": { "text": "... nämlich ins Planetarium. Wie viel wir dieses Jahr zusammen erlebt und gemacht haben. So schön. So besonders für mich. Aber es hat SO GUT getan.", "image": "images/21.jpg", "musicLink": "https://music.youtube.com/watch?v=JJTjc7iRNY8&si=zHe88ElkxZMBNhVZ" },
-      "22": { "text": "Haha steht für die ganzen Stunden online. Einfach quatschen, lesen und zocken. Und nicht zu vergessen... Rohre.", "image": "images/22.jpg", "musicLink": "https://music.youtube.com/watch?v=m3DNdlCcLNo&si=souPVV36uPX5KYKq" },
-      "23": { "text": "<3 Danke, dass du ein Teil meiner Katzengang geworden bist. <3", "image": "images/23.jpg", "musicLink": "https://music.youtube.com/watch?v=VwddTc6NqzM&si=oEpdhEv0vmW6rQuA" },
-      "24": { "text": "Ja. Sind einfach zwei Hotties. Was soll ich sagen?", "image": "images/24.jpg", "musicLink": "https://music.youtube.com/watch?v=H8Wx8GV1Oiw&si=0ho1RNNahAFC8nXH" }
-    };
-
-    document.getElementById('start-btn').onclick = () => {
-      document.getElementById('start-screen').style.display = 'none';
+      "1": {"text": "Unser erster Kontakt <3 Wie recht du hattest. WHAT A MATCH!", "image": "images/1.jpg", "musicLink": "https://music.youtube.com/watch?v=R3MuRY7LAg8&si=1bqwQtnAq4-n3Ib2"},
+      "2": {"text": "Hahah, die Lelit Aktion! Stellvertretend für die gesamte Coffee-Journey mit dir. So ein schönes Hobby mit so schönen Erinnerungen mit dir.", "image": "images/2.jpg", "musicLink": "https://music.youtube.com/watch?v=m0zwbe6Cz3U&si=Gmi6pUu_AxWWjfub"},
+      "3": {"text": "So liebevoll. So fühl ich mich in deiner Gegenwart. Behutsam geliebt.", "image": "images/3.jpg", "musicLink": "https://music.youtube.com/watch?v=K_jUQWkHPZk&si=u-Z_fyTIndv4tA8n"},
+      "4": {"text": "OMG! Wie geil war der Tag? Und wie lecker war die Pizza beim Pferd?! Richtiger erster Münsti Tag mit Chillen am Kanal.", "image": "images/4.jpg", "musicLink": "https://music.youtube.com/watch?v=BB0eys9AixU&si=e-FqdD3PY4XrwyMh"},
+      "5": {"text": "Das erste Mal Bibimbap! Das erste Mal, dass du für mich gekocht hast. Und wie LECKER es war! Der Abend hat noch eine Core Memory für mich. <3", "image": "images/5.jpg", "musicLink": "https://music.youtube.com/watch?v=LDg8UW51jCs&si=eZPyia28E2X1-i9f"},
+      "6": {"text": "Muss ich dazu was sagen? Danke für jeden Lacher und für jedes Sticker-würdige Gesicht im letzten Jahr. Ich liebe dich!", "image": "images/6.jpg", "musicLink": "https://music.youtube.com/watch?v=KSQttz9l-0U&si=fGZF1tE53hkfHz7W"},
+      "7": {"text": "<3 Danke, dass du ein Teil meiner Familie geworden bist. <3", "image": "images/7.jpg", "musicLink": "https://music.youtube.com/watch?v=soCJTCElcbk&si=O_PHb62stetkqYkN"},
+      "8": {"text": "Ich hätte vermutlich den kompletten Kalender voll mit Reload-Fotos machen können. Es war so schön. Danke für all diese kleinen und großen Momente dort. Danke für diese schönen Erfahrungen und danke, dass ich das alles mit DIR erleben darf. ~blessed~", "image": "images/8.jpg", "musicLink": "https://music.youtube.com/watch?v=u8HlJVaweaQ&si=5b-nCoFWw8N6hETy"},
+      "9": {"text": "SCHWEBI! WUPPI DÖNI!", "image": "images/9.jpg", "musicLink": "https://music.youtube.com/watch?v=1QpQqt7FLSE&si=0t1xYA6-KCBreWoG"},
+      "10": {"text": "Danke, dass du mir zuhörst. Danke, dass du so aufmerksam bist. Danke, dass du mich so gut kennen möchtest. Danke für den schönen Geburtstag mit dir. Deine Geschenke haben mir so viel bedeutet.", "image": "images/10.jpg", "musicLink": "https://music.youtube.com/watch?v=LtNQwLo8N-Y&si=0HQzlo5KNuwHinuB"},
+      "11": {"text": "Hamburg. Kurz vor Resolve. Unser erstes gemeinsames Konzert. Und wieder könnte ich Danke sagen. Danke, dass du mir diesen Teil meines Lebens wieder gebracht hast. Danke für diesen unglaublich schönen Urlaub.", "image": "images/11.jpg", "musicLink": "https://music.youtube.com/watch?v=QGuc2kykzNw&si=pfwfBXMf0b8P3AsO"},
+      "12": {"text": "Haha Japan. Das haben wir so gut gemacht. Ich bin so stolz auf dich, dass du das gemacht hast. Und all die Erinnerungen, die du dort gemacht hast. Du bist so daran gewachsen. Das war richtig schön aus der Ferne zu beobachten. (wir müssen noch die restlichen Fotos schauen lol )", "image": "images/12.jpg", "musicLink": "https://music.youtube.com/watch?v=QS_dvqcY3l8&si=2h1NTfl_mHYsU-7p"},
+      "13": {"text": "Unser erstes Selfie. haha Erinnerst du dich? Das ging an Momo.", "image": "images/13.jpg", "musicLink": "https://music.youtube.com/watch?v=-QcSjf4qZS0&si=8exQGWxh3SZflYdA"},
+      "14": {"text": "Aw. Spielplatz in Mannheim. Das erste Mal bei deinen Eltern. Der Spaziergang in deiner Hood. <3", "image": "images/14.jpg", "musicLink": "https://music.youtube.com/watch?v=lsXLS8wJNAg&si=MlbUt41TLULtl-dT"},
+      "15": {"text": "Dein erster Besuch bei mir. STAY SLINKY! Wie ADHD war das eigentlich? Wie ADHD ist dieses Bild? :D", "image": "images/15.jpg", "musicLink": "https://music.youtube.com/watch?v=YB13CAOZhcM&si=3A6wL4RjON41TY7_"},
+      "16": {"text": "\"Dieses Paar möchte dich gern auf einen Cocktail einladen.\"", "image": "images/16.jpg", "musicLink": "https://music.youtube.com/watch?v=AvMY_KYUv1g&si=9S6vEjvo5Vsg0bs1"},
+      "17": {"text": "Ich hab mehr Flips in meinen Mund bekommen. Den Sieg wollte ich einfach auch nochmal hier für uns alle in Erinnerung rufen.", "image": "images/17.jpg", "musicLink": "https://music.youtube.com/watch?v=piQixLjDk9A&si=yysxk77l5ty0Jbqj"},
+      "18": {"text": "Efteling. Was soll ich sagen. Das war einfach awesome. DER FLIEGENDE HOLLÄNDER!", "image": "images/18.jpg", "musicLink": "https://music.youtube.com/watch?v=pZUbvrJCs5w&si=YwvrUehVocEKDdcV"},
+      "19": {"text": "Ramen in Frankfurt. Stellvertretend für all unsere Food Spots und Erlebnisse. Das Leben ist so gut mit dir.", "image": "images/19.jpg", "musicLink": "https://music.youtube.com/watch?v=WBXWcQan6GE&si=MJnXBVxwQc2WuPTB"},
+      "20": {"text": "Erstes Mal zusammen ins Kino! Erinnerst du dich? Im Schlosstheater? Und was wir davor gemacht haben?", "image": "images/20.jpg", "musicLink": "https://music.youtube.com/watch?v=LgaYI1vbou4&si=i6O5OdGr3t2MYhxv"},
+      "21": {"text": "... nämlich ins Planetarium. Wie viel wir dieses Jahr zusammen erlebt und gemacht haben. So schön. So besonders für mich. Aber es hat SO GUT getan.", "image": "images/21.jpg", "musicLink": "https://music.youtube.com/watch?v=JJTjc7iRNY8&si=zHe88ElkxZMBNhVZ"},
+      "22": {"text": "Haha steht für die ganzen Stunden online. Einfach quatschen, lesen und zocken. Und nicht zu vergessen... Rohre.", "image": "images/22.jpg", "musicLink": "https://music.youtube.com/watch?v=m3DNdlCcLNo&si=souPVV36uPX5KYKq"},
+      "23": {"text": "<3 Danke, dass du ein Teil meiner Katzengang geworden bist. <3", "image": "images/23.jpg", "musicLink": "https://music.youtube.com/watch?v=VwddTc6NqzM&si=oEpdhEv0vmW6rQuA"},
+      "24": {"text": "Ja. Sind einfach zwei Hotties. Was soll ich sagen?", "image": "images/24.jpg", "musicLink": "https://music.youtube.com/watch?v=H8Wx8GV1Oiw&si=0ho1RNNahAFC8nXH"}
     };
 
     const grid = document.getElementById("grid");
@@ -203,35 +209,29 @@
     const modalText = document.getElementById("modal-text");
     const modalMusicLink = document.getElementById("modal-music-link");
 
-    const doorsOrder = [2,6,14,22,1,5,7,3,8,4,12,9,10,11,13,15,16,17,18,19,20,21,23,24];
+    document.getElementById('start-btn').onclick = () => {
+      document.getElementById('start-screen').style.display = 'none';
+    };
 
-    const today = new Date().getDate();
-
-    doorsOrder.forEach(i => {
+    for (let i = 1; i <= 24; i++) {
       const door = document.createElement("div");
       door.className = "door";
       door.textContent = i;
-
-      if(i <= today){
-        door.onclick = () => openDoor(i);
-      } else {
-        door.style.opacity = 0.5;
-        door.style.cursor = 'not-allowed';
-      }
+      door.onclick = () => openDoor(i);
       grid.appendChild(door);
-    });
+    }
 
-    function openDoor(n){
+    function openDoor(n) {
       const entry = content[n];
-      if(!entry) return;
+      if (!entry) return;
       modalImg.src = entry.image;
-      modalMusicLink.href = entry.musicLink;
       modalText.textContent = entry.text;
-      modalBg.style.display = 'flex';
+      modalMusicLink.href = entry.musicLink;
+      modalBg.style.display = "flex";
     }
 
     document.getElementById("close-btn").onclick = () => {
-      modalBg.style.display = 'none';
+      modalBg.style.display = "none";
     };
   </script>
 </body>
