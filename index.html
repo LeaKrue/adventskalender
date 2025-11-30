@@ -1,175 +1,146 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adventskalender</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:wght@400;600&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventskalender</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Verdana, Geneva, sans-serif;
+      background: #1f1f1f url('images/howl-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffe6a7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
 
-body {
-  margin: 0;
-  font-family: "Crimson Pro", serif;
-  background: url('images/howl_room_bg.jpg') center/cover no-repeat;
-  color: #f8f1e1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
+    h1 {
+      margin-top: 20px;
+      font-size: 2.6rem;
+      color: #ffe6a7;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
 
-h1 {
-  font-family: "Cinzel", serif;
-  font-size: 2.6rem;
-  color: #ffdca8;
-  text-shadow: 0 0 12px rgba(255, 240, 200, 0.6);
-  margin-top: 20px;
-  animation: float 4s ease-in-out infinite;
-}
+    .grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 90%;
+      max-width: 600px;
+    }
 
-.grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  width: 90%;
-  max-width: 600px;
-}
+    .door {
+      height: 85px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.6rem;
+      cursor: pointer;
+      border-radius: 12px;
+      color: #ffe6a7;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, box-shadow 0.25s;
+    }
 
-.door {
-  background: rgba(30,20,10,0.7);
-  border: 1px solid rgba(255,220,180,0.2);
-  border-radius: 12px;
-  height: 85px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.6rem;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.3s;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-  backdrop-filter: blur(2px);
-  color: #ffdca8;
-  position: relative;
-}
+    /* Türchen Hover Effekt */
+    .door:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    }
 
-.door:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 25px rgba(255, 200, 100, 0.6);
-}
+    /* Modal */
+    .modal-bg {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
 
-.modal-bg {
-  position: fixed;
-  top:0; left:0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
+    .modal {
+      background: #3b2b24;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+    }
 
-.modal {
-  background: rgba(40,30,20,0.95);
-  border: 2px solid #ffdca8;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 100%;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-}
+    .modal img {
+      width: 100%;
+      max-height: 50vh;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
 
-.modal img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
+    .music-link {
+      display: block;
+      margin-bottom: 10px;
+      color: #ffe6a7;
+      text-decoration: underline;
+      font-weight: bold;
+    }
 
-.close-btn {
-  margin-top: 10px;
-  background: #ffdca8;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #3b2b1f;
-  font-weight: bold;
-}
+    .modal-text {
+      color: #ffe6a7;
+    }
 
-.music-link {
-  display: block;
-  margin-top: 10px;
-  color: #ffdca8;
-  text-decoration: underline;
-  font-weight: bold;
-}
+    .close-btn {
+      position: sticky;
+      top: 0;
+      align-self: flex-end;
+      background: #af8454;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #2b1f1a;
+      font-weight: bold;
+      z-index: 10;
+      margin-bottom: 10px;
+    }
 
-@media (max-width:600px){
-  h1 { font-size: 1.8rem; }
-  .grid { grid-template-columns: repeat(2,1fr); gap:10px; }
-  .door { height:70px; font-size:1.3rem; }
-  .modal { max-width:90%; padding:15px; }
-  .close-btn { width:100%; }
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
-
-#start-screen {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(2px);
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
-}
-
-#start-screen h2 {
-  font-family:"Cinzel", serif;
-  font-size:2.2rem;
-  margin-bottom:20px;
-  color:#ffdca8;
-  text-shadow: 0 0 12px rgba(255,220,160,0.7);
-}
-
-#start-btn {
-  background:#ffdca8;
-  padding:12px 20px;
-  border-radius:10px;
-  border:none;
-  font-size:1.3rem;
-  cursor:pointer;
-  color:#3b2b1f;
-  font-weight:bold;
-  box-shadow:0 3px 10px rgba(0,0,0,0.4);
-}
-</style>
+    @media (max-width:600px) {
+      .grid {
+        grid-template-columns: repeat(2,1fr);
+        gap: 10px;
+      }
+      .door {
+        height: 70px;
+        font-size: 1.3rem;
+      }
+      .modal {
+        max-width: 95%;
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="start-screen">
-  <h2>Für Schmenni &lt;3</h2>
-  <button id="start-btn">Adventskalender öffnen</button>
-</div>
+  <h1>Adventskalender</h1>
+  <div class="grid" id="grid"></div>
 
-<h1>Adventskalender</h1>
-<div class="grid" id="grid"></div>
-
-<div class="modal-bg" id="modal-bg">
-  <div class="modal" id="modal">
-    <img id="modal-img" src="" alt="Bild"/>
-    <p id="modal-text"></p>
-    <a id="modal-music-link" href="" target="_blank" class="music-link">Song hören</a>
-    <button class="close-btn" id="close-btn">Schließen</button>
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal" id="modal">
+      <button class="close-btn" id="close-btn">Schließen</button>
+      <a id="modal-music-link" href="" target="_blank" class="music-link">Song hören</a>
+      <p id="modal-text" class="modal-text"></p>
+      <img id="modal-img" src="" alt="Bild">
+    </div>
   </div>
-</div>
 
 <script>
 const content = {
@@ -198,42 +169,38 @@ const content = {
   "23": { "text": "<3 Danke, dass du ein Teil meiner Katzengang geworden bist. <3", "image": "images/23.jpg", "musicLink": "https://music.youtube.com/watch?v=VwddTc6NqzM&si=oEpdhEv0vmW6rQuA" },
   "24": { "text": "Ja. Sind einfach zwei Hotties. Was soll ich sagen?", "image": "images/24.jpg", "musicLink": "https://music.youtube.com/watch?v=H8Wx8GV1Oiw&si=0ho1RNNahAFC8nXH" }
 };
+    };
 
-document.getElementById('start-btn').onclick = () => {
-  document.getElementById('start-screen').style.display = 'none';
-};
+    // Farben abwechselnd
+    const colors = ["#283618","#335c67","#4b3f72","#432818","#540b0e"];
 
-const grid = document.getElementById("grid");
-const modalBg = document.getElementById("modal-bg");
-const modalImg = document.getElementById("modal-img");
-const modalText = document.getElementById("modal-text");
-const modalMusicLink = document.getElementById("modal-music-link");
+    const doorsOrder = [2,6,14,22,5,12,1,8,16,3,9,18,20,7,10,13,4,11,15,17,19,21,23,24]; // Türchen durcheinander
+    const grid = document.getElementById("grid");
+    doorsOrder.forEach((num,i)=>{
+      const door = document.createElement("div");
+      door.className = "door";
+      door.textContent = num;
+      door.style.backgroundColor = colors[i%colors.length];
+      door.onclick = ()=>openDoor(num);
+      grid.appendChild(door);
+    });
 
-// Türchen in zufälliger Reihenfolge
-let doors = [...Array(24).keys()].map(i=>i+1);
-doors = doors.sort(() => Math.random() - 0.5);
+    const modalBg = document.getElementById("modal-bg");
+    const modalImg = document.getElementById("modal-img");
+    const modalText = document.getElementById("modal-text");
+    const modalMusicLink = document.getElementById("modal-music-link");
+    const closeBtn = document.getElementById("close-btn");
 
-for (let n of doors) {
-  const door = document.createElement("div");
-  door.className = "door";
-  door.textContent = n;
-  door.onclick = () => openDoor(n);
-  grid.appendChild(door);
-}
+    function openDoor(n){
+      const entry = content[n];
+      if(!entry) return;
+      modalImg.src = entry.image;
+      modalText.textContent = entry.text;
+      modalMusicLink.href = entry.musicLink;
+      modalBg.style.display = "flex";
+    }
 
-function openDoor(n) {
-  const entry = content[n];
-  if (!entry) return;
-  modalImg.src = entry.image;
-  modalText.textContent = entry.text;
-  modalMusicLink.href = entry.musicLink;
-  modalBg.style.display = "flex";
-}
-
-document.getElementById("close-btn").onclick = () => {
-  modalBg.style.display = "none";
-};
-</script>
+    closeBtn.onclick = ()=>{ modalBg.style.display = "none"; };
+  </script>
 </body>
 </html>
-
